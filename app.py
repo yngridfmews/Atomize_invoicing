@@ -7,10 +7,10 @@ from io import BytesIO
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
 st.title("📄 Atomize Invoice Extractor")
-st.write("Upload the `.html` file.")
+#st.write("Upload the `.html` file.")
 
 # Upload do HTML
-html_file = st.file_uploader("📤 Faça upload do arquivo HTML", type=["html"])
+html_file = st.file_uploader("📤 Upload the HTML file", type=["html"])
 
 def extract_all_invoices_excluding_below_threshold(html_content, invoice_threshold=14728):
     soup = BeautifulSoup(html_content, 'html.parser')
