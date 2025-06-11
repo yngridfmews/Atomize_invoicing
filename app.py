@@ -78,17 +78,17 @@ def extract_all_invoices_excluding_below_threshold(html_content, invoice_thresho
 # Helpers
 def extract_created_from(cell):
     """
-    Extrai corretamente o nome da invoice (Customer/Supplier Invoice(s) <número>), 
-    removendo qualquer valor adicional após o número.
+    Extrai o primeiro número da primeira linha da célula, ignorando textos adicionais.
     """
     raw_text = cell.get_text(separator="\n").strip()
     first_line = raw_text.split('\n')[0].strip()
 
-    # Extrai padrões do tipo: 'Customer invoice 12345', 'Supplier invoices 67890', etc.
-    match = re.search(r'(Customer|Supplier)\s+invoices?\s+\d+', first_line, re.IGNORECASE)
+    # Pega o primeiro número (ex: 12257) de qualquer texto
+    match = re.search(r'\d+', first_line)
     if match:
-        return match.group(0).title()  # .title() para garantir capitalização correta
+        return f"Invoice {match.group(0)}"
     return first_line
+
 
 
 def extract_voucher_text_from_cell(cell):
