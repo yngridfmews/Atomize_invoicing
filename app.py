@@ -145,4 +145,4 @@ if html_file:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     else:
-        st.warning("⚠️ Nenhuma invoice válida encontrada no arquivo.")
+        st.warning("⚠️ No valid invoice invoice found. All under 14728")
