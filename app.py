@@ -7,7 +7,7 @@ from io import BytesIO
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
 st.title("📄 Atomize Invoice Extractor")
-st.write("Faça upload do arquivo `.html` exportado e baixe as invoices filtradas em Excel.")
+st.write("Upload the `.html` file.")
 
 # Upload do HTML
 html_file = st.file_uploader("📤 Faça upload do arquivo HTML", type=["html"])
@@ -136,10 +136,10 @@ if html_file:
         # Gerar arquivo Excel para download
         output = BytesIO()
         df_invoice.to_excel(output, index=False, engine='openpyxl')
-        st.success("✅ Invoices extraídas com sucesso!")
+        st.success("✅ Sucess!")
 
         st.download_button(
-            label="📥 Baixar Excel",
+            label="📥 Download Excel",
             data=output.getvalue(),
             file_name="Atomize_invoice.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
