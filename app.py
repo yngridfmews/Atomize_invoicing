@@ -78,13 +78,18 @@ def extract_all_invoices_excluding_below_threshold(html_content, invoice_thresho
 # Helpers
 def extract_created_from(cell):
     """
-    Extrai o conteúdo apenas do link <a> dentro da célula (ignora <br> e números adicionais).
+    Extrai corretamente o nome da invoice (Customer/Supplier Invoice(s) <número>), 
+    removendo qualquer valor adicional após o número.
     """
-    link = cell.find('a')
-    if link:
-        return link.get_text(strip=True)
-    else:
-        return cell.get_text(separator="\n").strip().split('\n')[0].strip()
+    raw_text = cell.get_text(separator="\n").strip()
+    first_line = raw_text.split('\n')[0].strip()
+
+    # Extrai padrões do tipo: 'Customer invoice 12345', 'Supplier invoices 67890', etc.
+    match = re.search(r'(Customer|Supplier)\s+invoices?\s+\d+', first_line, re.IGNORECASE)
+    if match:
+        return match.group(0).title()  # .title() para garantir capitalização correta
+    return first_line
+
 
 def extract_voucher_text_from_cell(cell):
     cell_html = str(cell).replace('<br>', ' | ').replace('<br/>', ' | ')
