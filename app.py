@@ -111,6 +111,7 @@ if html_file:
         df_invoice['CUSTOMER Dimension'] = df['Account']
         df_invoice['No.'] = "RMS PACKAGE"
         df_invoice['Quantity'] = "1"
+        df_invoice['Deferral Code'] = "AR"
         df_invoice['Deferral Start Date'] = df['Period'].apply(lambda x: x.split(' - ')[0])
         df_invoice['Deferral End Date'] = df['Period'].apply(lambda x: x.split(' - ')[1])
 
@@ -129,7 +130,7 @@ if html_file:
 
         new_columns = [
             "Subaccount No.", "Currency Code", "Type",
-            "VAT Prod. Posting Group", "Deferral Code", "BU Dimension", "C Dimension",
+            "VAT Prod. Posting Group", "BU Dimension", "C Dimension",
             "ENTITY Dimension", "IC Dimension", "PRICE Dimension", "PRODUCT Dimension",
             "RECURRENCE Dimension", "SUBPRODUCT Dimension", "TAX DEDUCTIBILITY Dimension",
             "Reseller Code", "Apply Overpayments"
