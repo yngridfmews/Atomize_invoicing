@@ -77,12 +77,8 @@ def extract_all_invoices_excluding_below_threshold(html_content, invoice_thresho
 
 # Helpers
 def extract_created_from(cell):
-    link = cell.find('a')
-    if link:
-        created_from = link.get_text().strip()
-    else:
-        created_from = cell.get_text().strip()
-    return created_from.split('\n')[0].strip()
+    raw_text = cell.get_text(separator="\n").strip()
+    return raw_text.split('\n')[0].strip()
 
 def extract_voucher_text_from_cell(cell):
     cell_html = str(cell).replace('<br>', ' | ').replace('<br/>', ' | ')
