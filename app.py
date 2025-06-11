@@ -3,6 +3,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import re
 from io import BytesIO
+from datetime import datetime, timedelta
 
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
@@ -12,7 +13,7 @@ st.title("📄 Atomize Invoice Extractor")
 # Upload do HTML
 html_file = st.file_uploader("📤 Upload the HTML file", type=["html"])
 
-def extract_all_invoices_excluding_below_threshold(html_content, invoice_threshold=14728):
+def extract_all_invoices_excluding_below_threshold(html_content, invoice_threshold=14278):
     soup = BeautifulSoup(html_content, 'html.parser')
 
     columns = [
@@ -112,9 +113,21 @@ if html_file:
         df_invoice['Deferral Start Date'] = df['Period'].apply(lambda x: x.split(' - ')[0])
         df_invoice['Deferral End Date'] = df['Period'].apply(lambda x: x.split(' - ')[1])
 
+        # Data atual no formato YYYY-MM-DD
+        today_str = datetime.today().strftime("%Y-%m-%d")
+
+        # Colunas com a data atual
+        df_invoice['Document Date'] = today_str
+        df_invoice['Posting Date'] = today_str
+        df_invoice['VAT Date'] = today_str
+
+        # Due Date = Posting Date + 14 dias
+        posting_date_dt = datetime.today()
+        due_date_str = (posting_date_dt + timedelta(days=14)).strftime("%Y-%m-%d")
+        df_invoice['Due Date'] = due_date_str
+
         new_columns = [
-            "Subaccount No.", "Document Date", "Posting Date", "Due Date",
-            "VAT Date", "Currency Code", "Type",
+            "Subaccount No.", "Currency Code", "Type",
             "VAT Prod. Posting Group", "Deferral Code", "BU Dimension", "C Dimension",
             "ENTITY Dimension", "IC Dimension", "PRICE Dimension", "PRODUCT Dimension",
             "RECURRENCE Dimension", "SUBPRODUCT Dimension", "TAX DEDUCTIBILITY Dimension",
@@ -145,4 +158,4 @@ if html_file:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     else:
-        st.warning("⚠️ No valid invoice invoice found. All under 14728")
+        st.warning("⚠️ No valid invoice invoice found. All under 14278")
